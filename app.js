@@ -8,7 +8,8 @@ const { default: mongoose } = require('mongoose');
 
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASSWORD;
-mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@cluster0.51fyo1c.mongodb.net/?retryWrites=true&w=majority`).then(() => {
+
+mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@javaweb.mrxj1c9.mongodb.net/?retryWrites=true&w=majority`).then(() => {
     console.log('Connected to database!');
 }).catch((err)=> {
     console.log(err);
@@ -94,4 +95,41 @@ app.post('/auth/login', async (req, res) => {
     }
     
 });
+
+/// private Route
+app.get("/user/:id",checkToken, async (req, res) => {
+    const id = req.params.id;
+    
+    const user = await User.findById(id, '-password');
+    if(!user) {
+        return res.status(404).send({
+            message: 'User does not exist!'
+        });
+    }
+
+    res.status(200).send({
+        message: user,
+    });
+});
+
+
+function checkToken(req, res, next) {
+    const authHeader = req.headers['authorization'];   
+    console.log(authHeader);
+    const token = authHeader && authHeader.split(' ')[1];
+    console.log(token);
+    if(!token) {
+        return res.status(401).send({
+            message: 'No token provided!'
+        });
+    }
+    try{
+        const secret =  process.env.JWT_SECRET;
+        jwt.verify(token, secret);
+        next();
+    } catch(error) {
+
+    }
+    
+}
 module.exports = app;
