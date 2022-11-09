@@ -1,29 +1,7 @@
-require('dotenv').config();
-const express = require('express');
-const app = express();
+const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const { default: mongoose } = require('mongoose');
-
-
-const dbUser = process.env.DB_USER;
-const dbPassword = process.env.DB_PASSWORD;
-
-mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@javaweb.mrxj1c9.mongodb.net/?retryWrites=true&w=majority`).then(() => {
-    console.log('Connected to database!');
-}).catch((err)=> {
-    console.log(err);
-});
-
-app.use(express.json());
-
-
-const User = require('./models/User');
-const { exists } = require('./models/User');
-
-
-
-app.post('/auth/register', async (req, res, next) => {
+exports.insertUser = async (req, res, next) => {
     const {name, email, password, admin } = req.body;
     
    
@@ -62,10 +40,8 @@ app.post('/auth/register', async (req, res, next) => {
     }
 
 
-});
-
-
-app.post('/auth/login', async (req, res) => {
+}
+exports.loginUser = async (req, res) => {
     const {email, password} = req.body;
     const user = await User.findOne({email: email});
     if(!user) {
@@ -87,17 +63,16 @@ app.post('/auth/login', async (req, res) => {
             message: 'Login successful!',
             token: token
         });
-    } catch{
+    } catch(error){
         res.status(500).send({
             message: 'Something went wrong!'
         });
         console.log(error);
     }
     
-});
+}
 
-/// private Route
-app.get("/user/:id",checkToken, async (req, res) => {
+exports.checkAuth = async (req, res) => {
     const id = req.params.id;
     
     const user = await User.findById(id, '-password');
@@ -110,26 +85,4 @@ app.get("/user/:id",checkToken, async (req, res) => {
     res.status(200).send({
         message: user,
     });
-});
-
-
-function checkToken(req, res, next) {
-    const authHeader = req.headers['authorization'];   
-    console.log(authHeader);
-    const token = authHeader && authHeader.split(' ')[1];
-    console.log(token);
-    if(!token) {
-        return res.status(401).send({
-            message: 'No token provided!'
-        });
-    }
-    try{
-        const secret =  process.env.JWT_SECRET;
-        jwt.verify(token, secret);
-        next();
-    } catch(error) {
-
-    }
-    
-}
-module.exports = app;
+};
