@@ -5,7 +5,8 @@ import {
     createVesteController,
     findOneVesteController,
     updateVesteController,
-    deleteVesteController
+    deleteVesteController,
+    listVestesByShopNameController
 } from "../controllers/index.js";
 
 import AuthMiddleware from '../../../shared/middleware/AuthMiddleware.js'
@@ -22,6 +23,10 @@ vesteRoutes.get("/", (request, response) => {
 
 vesteRoutes.get("/:id", (request, response) => {
     return findOneVesteController().handle(request, response);
+});
+
+vesteRoutes.get("/shop/:shop_name", (request, response) => {
+    return listVestesByShopNameController().handle(request, response);
 });
 
 vesteRoutes.put("/:id", AuthMiddleware, (request, response) => {
