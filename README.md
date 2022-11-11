@@ -10,6 +10,9 @@
    
 3. Run `npm start` command
 
+## Acess to S3 ninja
+
+http://localhost:9444/
 
 ## Exemplos de curl
 
