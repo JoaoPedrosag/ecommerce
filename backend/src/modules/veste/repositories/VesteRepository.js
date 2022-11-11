@@ -41,6 +41,7 @@ class VesteRepository {
         return veste
     }
 
+    // usar image repository para buscar a url e setar no map a respecitiva url no array de images name
     async listVestesByShopName(shop_name){
         const vestes = await Veste.find({shop_name});
         return vestes;

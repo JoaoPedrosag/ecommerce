@@ -5,7 +5,7 @@ const VesteSchema = new Schema({
     descricao: String,
     valor: Schema.Types.Decimal128,
     tamanhos: [String],
-    images: [String],
+    images: [{ name: String, url: String}],
     discurso_venda: String,
     estoque: Number,
     updated_at: { type: Date, default: Date.now },
