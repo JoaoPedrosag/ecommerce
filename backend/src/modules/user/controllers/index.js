@@ -2,7 +2,6 @@ import { UserRepository } from '../repositories/UserRepository.js';
 
 import { LoginUserController } from './LoginUserController.js'
 import { LoginUserService } from '../services/LoginUserService.js';
-
 import { RegisterUserController } from './RegisterUserController.js';
 import { RegisterUserService } from '../services/RegisterUserService.js';
 
