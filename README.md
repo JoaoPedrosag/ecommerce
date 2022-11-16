@@ -4,53 +4,117 @@
 
 ## Steps to run this project:
 
-1. Run `sudo docker-compose up -d` command
+Abra um terminal:
 
-2. Run `npm i` command
+1. Run `sudo docker-compose up` command
+
+Abra outro terminal
+
+1. Run `npm i` command
    
-3. Run `npm start` command
+2. Run `npm run dev` command
 
-## Acess to S3 ninja
-
-http://localhost:9444/
 
 ## Exemplos de curl
 
-### 1. Create computador
+<h2 align="center">User</h2>
+
+### 1 - register user
 ```bash
 curl --request POST \
-  --url http://localhost:5000/computador \
-  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmM4YTNjNGNjOGJjZGE1MDk2ZmRhZSIsImlhdCI6MTY2ODA1OTQ1NiwiZXhwIjoxNjY4MDYzMDU2fQ.rwxPcpLjeGuKexrhMzGdbeQN2OvTptcfrhC_mfBTIXk' \
+  --url http://localhost:5000/auth/register \
   --header 'Content-Type: application/json' \
   --data '{
-	"hostname": "127.0.0.4",
-	"processador": "intel core 7",
-	"memoria": " 16 gb ddr4",
-	"armazenamento": "128g ssd",
-	"estado": "desativado"
+	"name": "augusto",
+	"email": "test@teste.com",
+	"password": "1234"
 }'
 ```
 
-### 2. listar todos computadores
+### 2 - register user admin
 ```bash
-curl --request GET \
-  --url http://localhost:5000/computador
+curl --request POST \
+  --url http://localhost:5000/auth/register \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"name": "augusto",
+	"email": "test@teste.com",
+	"password": "1234",
+  "admin": "true",
+  "shop_name": "white"
+}'
 ```
 
-### 3. Buscar um computador
+### 3 - login user
 ```bash
-curl --request GET \
-  --url http://localhost:5000/computador/{id}
+curl --request POST \
+  --url http://localhost:5000/auth/login \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"email": "test@teste.com",
+	"password": "1234"
+}'
 ```
 
-### 4. Update computador
+<h2 align="center">Veste</h2>
+
+### 1 - create veste
 ```bash
-curl --request PUT \
-  --url http://localhost:5000/computador/{id} \
-  --data '{"_id":"{id}","hostname":"127.0.0.1","processador":"intel core 32","memoria":" 16 gb ddr4","armazenamento":"128g ssd","estado":"desativado","__v":5}'
+curl --request POST \
+  --url http://localhost:5000/veste \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmVhMWIxNWJjMDFmZmIzNDY2OWU2YSIsInNob3BfbmFtZSI6ImJsYWNrIiwiaWF0IjoxNjY4MjAyMzMwLCJleHAiOjE2NjgyMDU5MzB9.kv8vV4twTFGVpilMKtGPFhVf_Dfe7DmJQycJh2O-cVk' \
+  --header 'Content-Type: application/json' \
+  --data '{
+	"descricao": "camisa 1",
+	"valor": 123.8,
+	"discurso_venda": "textinho bunito",
+	"estoque": 100,
+	"shop_name": "black"
+}'
 ```
-### 5. Delete computador
+
+### 2 - delete veste
+
 ```bash
 curl --request DELETE \
-  --url http://localhost:5000/computador/{id}
+  --url http://localhost:5000/veste/{veste_id} \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmVhMWIxNWJjMDFmZmIzNDY2OWU2YSIsInNob3BfbmFtZSI6ImJsYWNrIiwiaWF0IjoxNjY4MjAyMzMwLCJleHAiOjE2NjgyMDU5MzB9.kv8vV4twTFGVpilMKtGPFhVf_Dfe7DmJQycJh2O-cVk'
 ```
+
+### 3 - find one veste
+
+```bash
+curl --request GET \
+  --url http://localhost:5000/veste/{veste_id} \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmM4YTNjNGNjOGJjZGE1MDk2ZmRhZSIsImlhdCI6MTY2ODE4NDk3NSwiZXhwIjoxNjY4MTg4NTc1fQ._Md-mhEglgrdFbYFxzRMCy4bbQij5vCviwC-TPtNQ3M'
+```
+
+### 4 - list veste
+
+```bash
+curl --request GET \
+  --url http://localhost:5000/veste \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmM4YTNjNGNjOGJjZGE1MDk2ZmRhZSIsImlhdCI6MTY2ODE4NDk3NSwiZXhwIjoxNjY4MTg4NTc1fQ._Md-mhEglgrdFbYFxzRMCy4bbQij5vCviwC-TPtNQ3M'
+```
+
+### 5 - list By ShopName vestes
+
+```bash
+curl --request GET \
+  --url http://localhost:5000/veste/shop/{shop_name} \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmM4YTNjNGNjOGJjZGE1MDk2ZmRhZSIsImlhdCI6MTY2ODE4NDk3NSwiZXhwIjoxNjY4MTg4NTc1fQ._Md-mhEglgrdFbYFxzRMCy4bbQij5vCviwC-TPtNQ3M'
+```
+
+<h2 align="center">imagem</h2>
+
+### 1 - upload imagem
+
+```bash
+curl --request POST \
+  --url http://localhost:5000/image \
+  --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzNmM4YTNjNGNjOGJjZGE1MDk2ZmRhZSIsImlhdCI6MTY2ODEzMjMwNSwiZXhwIjoxNjY4MTM1OTA1fQ.aY5rYOnsZ9ARnKhT6qFZuQrweJ3GqMlZ2RnOlk1f1kk' \
+  --header 'Content-Type: multipart/form-data' \
+  --form image=@/home/augusto.savi/Downloads/teste-png.png
+  ```
+
+  
