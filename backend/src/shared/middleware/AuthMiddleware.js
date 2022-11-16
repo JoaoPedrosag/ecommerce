@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import AppError from '../errors/AppError.js';
-import { config } from '../../config/index.js'
+import { config } from '../../config/index.js';
 
 export default function AuthMiddleware(request, response, next) {
     const authHeader = request.headers['authorization'];

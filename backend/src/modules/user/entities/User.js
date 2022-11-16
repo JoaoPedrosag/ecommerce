@@ -8,4 +8,4 @@ const UserSchema = new Schema({
     shop_name: String
 });
 
-export const User = mongoose.model('user', UserSchema);
+export const User = mongoose.model('User', UserSchema);

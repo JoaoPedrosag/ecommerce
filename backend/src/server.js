@@ -12,6 +12,7 @@ import "./database/index.js";
 app.use(express.json());
 app.use(cors());
 app.use(router);
+app.use('/imagens', express.static('./src/assets/uploads/'));
 
 app.use((error, request, response, next) => {
     if (error instanceof AppError) {

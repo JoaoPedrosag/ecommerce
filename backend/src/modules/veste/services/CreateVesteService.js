@@ -7,13 +7,13 @@ class CreateVesteService {
         this.vesteRepository = vesteRepository;
     }
     
-    async execute({ descricao, valor, tamanhos, images, discurso_venda, estoque }) {
-        const vesteAlreadyExist = await this.vesteRepository.findByHostname(hostname);
+    async execute({ descricao, valor, tamanhos, images, discurso_venda, estoque , shop_name}) {
+        const vesteAlreadyExist = await this.vesteRepository.findByDescricao(descricao);
         if (vesteAlreadyExist) {
             throw new AppError('Já existe uma veste com essa descrição');
         }
 
-        return await this.vesteRepository.create({ descricao, valor, tamanhos, images, discurso_venda, estoque });
+        return await this.vesteRepository.create({ descricao, valor, tamanhos, images, discurso_venda, estoque , shop_name});
     }
 }
 

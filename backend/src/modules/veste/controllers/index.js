@@ -15,6 +15,9 @@ import { UpdateVesteController } from './UpdateVesteController.js';
 import { DeleteVesteService } from '../services/DeleteVesteService.js';
 import { DeleteVesteController } from './DeleteVesteController.js';
 
+import {ListVestesByShopNameService} from '../services/ListVestesByShopNameService.js';
+import {ListVestesByShopNameController} from './ListVestesByShopNameController.js'
+
 const vesteRepository = new VesteRepository();
 
 const createVesteService = new CreateVesteService(vesteRepository);
@@ -30,6 +33,11 @@ export function listVestesController() {
 const findOneVesteService = new FindOneVesteService(vesteRepository);
 export function findOneVesteController() {
     return new FindOneVesteController(findOneVesteService);
+}
+
+const listVestesByShopName = new ListVestesByShopNameService(vesteRepository);
+export function listVestesByShopNameController() {
+    return new ListVestesByShopNameController(listVestesByShopName);
 }
 
 const updateVesteService = new UpdateVesteService(vesteRepository);

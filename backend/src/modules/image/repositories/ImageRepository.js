@@ -1,37 +1,52 @@
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+import crypto from 'crypto';
 import { config } from '../../../config/index.js';
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { PutObjectCommand, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { S3 } from '../../../shared/client/S3Client.js'
 
 
 class ImageRepository {
     s3;
 
-    constructor(){
-        this.s3 = new S3Client({
-            credentials: {
-                accessKeyId: config.AWS_KEY,
-                secretAccessKey: config.AWS_SECRET,
-            },
-            region: config.S3_REGION,
-            endpoint: config.S3_URL,
-            sslEnabled: false,
-            s3ForcePathStyle: true
-        })
+    constructor() {
+        this.s3 = S3();
     }
 
-    async upload({ originalname, buffer, mimetype }) {
-        
+    generateFileName(bytes = 32) {
+        return crypto.randomBytes(bytes).toString('hex');
+    }
+
+    async upload({ buffer, mimetype }) {
+        const imageName = this.generateFileName();
         const params = {
             Bucket: config.S3_BUCKET,
-            Key: originalname,
+            Key: imageName,
             Body: buffer,
             ContentType: mimetype
         }
-
         const command = new PutObjectCommand(params);
-
         const response = await this.s3.send(command);
-        
-        return response;
+        return {imageName, response};
+    }
+
+    async getUrl(imageName) {
+        const url = await getSignedUrl(
+            this.s3,
+            new GetObjectCommand({
+                Bucket: config.S3_BUCKET,
+                Key: imageName
+            }),
+            { expiresIn: 60 }// 60 seconds
+        );
+        return url;
+    }
+
+    async delete(imageName) {
+        const deleteParams = {
+            Bucket: config.S3_BUCKET,
+            Key: imageName,
+        }
+        return this.s3.send(new DeleteObjectCommand(deleteParams));
     }
 
 }

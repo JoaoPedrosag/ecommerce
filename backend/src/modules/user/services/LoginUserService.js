@@ -28,12 +28,10 @@ class LoginUserService {
         }
 
         try {
-            console.log({ validPassword, JWT_SECRET: config.JWT_SECRET })
             const token = jwt.sign({ id: userAlreadyExist._id }, config.JWT_SECRET, {
                 expiresIn: '1h'
             });
             return token;
-
         } catch (error) {
             throw new AppError(error, 500);
         }
