@@ -6,14 +6,26 @@
 
 Abra um terminal:
 
-1. Run `sudo docker-compose up` command
+1. Run `cd backend` command
 
-Abra outro terminal
+2. Run `sudo docker-compose up -d` command
+
+3. Run `npm i` command
+   
+4. Run `npm run dev` command
+
+Abra outro terminal:
+
+1. Run `cd frontend` command
 
 1. Run `npm i` command
    
-2. Run `npm run dev` command
+2. Run `npm start` command
 
+
+## Mongo-express
+
+access `http://localhost:8081/` para
 
 ## Exemplos de curl
 
