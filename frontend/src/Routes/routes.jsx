@@ -9,27 +9,26 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const Routering = () => {
 
-  return ( 
+  return (
     <Router>
       <Routes>
-        <Route path="*" element={<Login/>} />
-        <Route path="/cadastrar" element={<Cadastro/>} />
+        <Route path="*" element={<Login />} />
+        <Route path="/cadastrar" element={<Cadastro />} />
         <Route path="/home" element={
           <ProtectedRoutes>
-            <HomePage/>
-          </ProtectedRoutes>          
-          }
+            <HomePage />
+          </ProtectedRoutes>
+        }
         />
-         <Route path="/cadastrar-produto" element={
+        <Route path="/cadastrar-produto" element={
           <ProtectedRoutes>
-            <CadastroProduto/>
-          </ProtectedRoutes>          
-          }
-
+            <CadastroProduto />
+          </ProtectedRoutes>
+        }
         />
       </Routes>
     </Router>
-   );
+  );
 }
- 
+
 export default Routering;
