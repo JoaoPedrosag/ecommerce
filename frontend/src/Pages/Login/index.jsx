@@ -19,8 +19,7 @@ const Login = () => {
     console.log(form)
     try {
       setLoading(true)
-      const response = await userService.login(form)
-      console.log(form);
+      const response = await userService.login(form);
       if (response === true) {
         toastSuccess('usuário Logado com Sucesso')
         navigate('/home')

@@ -13,6 +13,11 @@ class UserRepository {
         return users;
     }
 
+    async listShops() {
+        const shops = await User.find({ shop_name: { $exists: true, $ne: "" } }).select('shop_name');
+        return { shops };
+    }
+
     async findByEmail(email) {
         const user = User.findOne({ email });
         return user;
