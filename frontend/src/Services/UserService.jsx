@@ -1,36 +1,31 @@
-import axios from 'axios';
+import api from './api';
 
 export default class UserServices {
-  constructor () {
-    this.axios = axios.create({
-      baseURL: 'http://localhost:5000/auth/',
-    })
-  }
 
-  async login (dados) {
-    const {data} = await this.axios.post('/login', dados)
-
+  async login(dados) {
+    const { data } = await api.post('/auth/login', dados)
     if (data) {
       console.log(data);
-      localStorage.setItem("token", data)
-
+      localStorage.setItem("@ecommerce_token", data)
+      api.defaults.headers.authorization = `Bearer ${data}`;
       return true
     }
-
-    return
+    return false;
   }
 
-  async cadastrar (dados) {
-    return this.axios.post('/register', dados)
+  async cadastrar(dados) {
+    return api.post('/auth/register', dados)
   }
 
-  usuarioAutenticado () {
-    return localStorage.getItem("token") !== undefined ? true : false
-    // return typeof localStorage.getItem("token")
+  usuarioAutenticado() {
+    return localStorage.getItem("@ecommerce_token") !== undefined ? true : false
   }
 
-  
-  async logout () {
-    localStorage.removeItem("token")
+  async logout() {
+    localStorage.removeItem("@ecommerce_token")
+  }
+
+  async isAdmin() {
+
   }
 }

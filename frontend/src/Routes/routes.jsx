@@ -5,11 +5,10 @@ import Cadastro from '../Pages/Cadastro/index'
 import CadastroProduto from '../Pages/Produto/index'
 import HomePage from '../Pages/Home/index'
 
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 const Routering = () => {
+
   return ( 
     <Router>
       <Routes>
